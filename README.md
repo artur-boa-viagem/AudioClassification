@@ -2,13 +2,12 @@
 Projeto da disciplina de Sinais e Sistemas no curso de Engenharia da Computação do CIn-UFPE
 
 # Clone o Projeto
-O projeto adiciona o Dataset utilizado como um submódulo do Github, para clonar o projeto rode:
-
+Clone o projeto com:
 ```console
-$ git clone --recurse-submodules https://github.com/luanjaardim/AudioClassification.git
+$ git clone https://github.com/luanjaardim/AudioClassification.git
 ```
 
-After this you must install some python packages to use this repository, you can previously create a local enviroment if wanted:
+Depois disso você deve instalar alguns pacotes de python que são utilizados nesse projeto, se quiser você pode criar um python enviroment antes de instalá-los:
 ```console
 $ cd AudioClassification/
 $ pip install -r requirements.txt
