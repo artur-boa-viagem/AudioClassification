@@ -7,3 +7,9 @@ O projeto adiciona o Dataset utilizado como um submódulo do Github, para clonar
 ```console
 $ git clone --recurse-submodules https://github.com/luanjaardim/AudioClassification.git
 ```
+
+After this you must install some python packages to use this repository, you can previously create a local enviroment if wanted:
+```console
+$ cd AudioClassification/
+$ pip install -r requirements.txt
+```
