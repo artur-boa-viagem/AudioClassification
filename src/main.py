@@ -1,37 +1,38 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-from matplotlib import image as img
-import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+from utils import getEveryFile, getSpectrogramFromImage
 layers = tf.keras.layers
 models = tf.keras.models
 
-possible_labels = ['Bird', 'Cat', 'Dog', 'Sheep', 'Cow', 'Monkey']
-labels_id = dict((name, index) for index, name in enumerate(possible_labels))
+# Get the paths to the images
+train_files = getEveryFile(typeDir='LBP/')
 
-def getSpectrogramFromImage(path_tensor):
-    path = path_tensor.numpy().decode()  # Convert the path tensor to a string
-    image = img.imread(path)
-    # Convert RGBA to grayscale
-    image_gray = np.dot(image[..., :3], [0.2989, 0.5870, 0.1140])  # Using luminosity method
-    return image_gray
+# Load the train data and labels
+train_data, train_label = zip(*[getSpectrogramFromImage(path) for path in train_files])
+train_data = np.array(train_data)
+train_label = np.array(train_label)
 
-path = ['../Spectrogram-DB/HOG/Cat/0.png', '../Spectrogram-DB/HOG/Cat/1.png', '../Spectrogram-DB/HOG/Cat/2.png']
-raw_train_data = tf.data.Dataset.from_tensor_slices(path)
-train_data = raw_train_data.map(
-    map_func=lambda path: tf.py_function(func=getSpectrogramFromImage, inp=[path], Tout=tf.float32),
-    num_parallel_calls=tf.data.experimental.AUTOTUNE
-)
+# Every image has the same shape, 496x293 pixels
+input_shape = (293, 496)
 
+# Create a Sequential model
 model = models.Sequential([
-    layers.Input(shape=(None, None, 1)),
-    layers.Conv2D(32, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
+    # Add a Flatten layer to flatten the input into a 1D tensor
+    layers.InputLayer(input_shape=input_shape),
     layers.Flatten(),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(10)
+    layers.Dense(128, activation='relu'),
+    layers.Dense(32, activation='relu'),
+    # Add a Dense layer with 5 units for output, as we have only 5 classes
+    layers.Dense(5)
 ])
+
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
+# Train the model
+model.fit(train_data, train_label, epochs=10, verbose=2, batch_size=64)
+model.save('spectrogram_model_LBP2.keras')
+
