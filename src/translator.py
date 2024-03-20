@@ -4,6 +4,13 @@ import numpy as np
 import os
 from skimage import feature
 
+#  README
+#
+## This file was used to generate the spectrogram images from the audio files
+## All of the spectrogram images were saved in the 'Spectrogram-DB' directory
+## You do not need to run this file, as the images are already saved in the directory
+## This file is only for reference purposes
+
 path_to_dataset = '../Animal-Sound-Dataset/'
 
 def getCurrTime(sample, sr):
@@ -47,7 +54,7 @@ def main():
                         wave = np.append(wave, y[:toAppend])
                         break
                     wave = np.append(wave, y)
-                
+
                 # Compute the spectrogram
                 specgram = lb.feature.melspectrogram(y=wave, sr=sr)
 
@@ -55,19 +62,8 @@ def main():
                 specgram_db = lb.power_to_db(specgram, ref=np.max)
 
                 baseDir = '../Spectrogram-DB/' 
-                baseHOGDir = baseDir + 'HOG/' + sub_dir_name
-                baseLBPDir = baseDir + 'LBP/' + sub_dir_name
-
-                #debug
-                # print(filename)
-                # plt.figure(figsize=(10, 4))
-                # lb.display.specshow(specgram_db, sr=sr, x_axis='time', y_axis='mel')
-                # plt.colorbar(format='%+2.0f dB')
-                # plt.title('Spectrogram')
-                # plt.xlabel('Time (s)')
-                # plt.ylabel('Frequency (Hz)')
-                # plt.tight_layout()
-                # plt.show()
+                baseHOGDir = baseDir + 'HOG/Train/' + sub_dir_name
+                baseLBPDir = baseDir + 'LBP/Train/' + sub_dir_name
 
                 saveLBP(specgram_db, baseLBPDir + '/' + str(id) + '.png')
                 saveHOG(specgram_db, baseHOGDir + '/' + str(id) + '.png')

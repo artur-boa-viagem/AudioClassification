@@ -2,6 +2,12 @@ import os
 from math import floor
 import numpy as np
 
+#  README
+#
+## This file was used to separate the train and test data
+## All the files are already separated in the 'Spectrogram-DB' directory
+## You do not need to run this file, this file is only for reference purposes
+
 baseDir = '../Spectrogram-DB/'
 
 for dir in ['HOG/', 'LBP/']:
