@@ -1,38 +1,29 @@
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
-import numpy as np
-import tensorflow as tf
-from utils import getEveryFile, getSpectrogramFromImage
-layers = tf.keras.layers
-models = tf.keras.models
+from train import train_and_save_model
+from test import test_model
 
-# Get the paths to the images
-train_files = getEveryFile(typeDir='LBP/')
+# Main function
+# @argv: command line arguments
+#    @argv[1]: 'train' or 'test'
+#    @argv[2]: name of the model to be saved or tested
+#    @argv[3]: 'HOG' or 'LBP' extractor types
+def main(command_line_args):
+    if len(command_line_args) < 2:
+        print('Usage: python main.py train <name_of_the_model> <HOG|LBP> or python main.py test <name_of_the_model>')
+        exit(1)
 
-# Load the train data and labels
-train_data, train_label = zip(*[getSpectrogramFromImage(path) for path in train_files])
-train_data = np.array(train_data)
-train_label = np.array(train_label)
+    elif command_line_args[1] == 'train':
+        if len(command_line_args) < 4 or command_line_args[3].upper() not in ['HOG', 'LBP']:
+            print('Usage: python main.py train <name_of_the_model> <HOG|LBP>')
+            exit(1)
+        train_and_save_model(extractor_type=command_line_args[3].upper(), model_name=command_line_args[2])
 
-# Every image has the same shape, 496x293 pixels
-input_shape = (293, 496)
+    elif command_line_args[1] == 'test':
+        if len(command_line_args) < 3:
+            print('Usage: python main.py test <name_of_the_model>')
+            exit(1)
+        test_model(model_name=command_line_args[2])
 
-# Create a Sequential model
-model = models.Sequential([
-    # Add a Flatten layer to flatten the input into a 1D tensor
-    layers.InputLayer(input_shape=input_shape),
-    layers.Flatten(),
-    layers.Dense(128, activation='relu'),
-    layers.Dense(32, activation='relu'),
-    # Add a Dense layer with 5 units for output, as we have only 5 classes
-    layers.Dense(5)
-])
-
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
-
-# Train the model
-model.fit(train_data, train_label, epochs=10, verbose=2, batch_size=64)
-model.save('spectrogram_model_LBP2.keras')
-
+if __name__ == '__main__':
+    import sys
+    command_line_args = sys.argv
+    main(command_line_args)
