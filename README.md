@@ -18,7 +18,7 @@ $ pip install -r requirements.txt
 O projeto possui o diretório 'src/' que contém os códigos fontes do projeto, e os diretórios 'Animal-Sound-Dataset/' e 'Spectrogram-DB/' que contém os datasets utilizados no projeto, no primeiro estão os arquivos de áudio e no segundo estão os espectrogramas gerados a partir dos arquivos de áudio, estes que por sua vez alimentam os modelos utilizados no projeto.
 
 # Treinando um modelo
-Para treinar um modelo, você pode utilizar o script `train.py`, por exemplo:
+Para treinar um modelo, você pode utilizar o comando, por exemplo:
 ```console
 $ python main.py train my_model HOG
 ```
@@ -26,7 +26,7 @@ O comando acima vai treinar um modelo que utiliza do extrator HOG, LBP é a outr
 O modelo treinado será salvo no diretório `src/models/` com o nome `HOG_my_model.keras`.
 
 # Testando um modelo treinado
-Para testar um modelo treinado, você pode utilizar o script `test.py`, por exemplo:
+Para testar um modelo treinado, você pode utilizar o comando, por exemplo:
 ```console
 $ python main.py test models/HOG_my_model.keras
 ```
