@@ -20,7 +20,7 @@ O projeto possui o diretório 'src/' que contém os códigos fontes do projeto, 
 # Treinando um modelo
 Para treinar um modelo, você pode utilizar o script `train.py`, por exemplo:
 ```console
-$ python train.py train my_model HOG
+$ python main.py train my_model HOG
 ```
 O comando acima vai treinar um modelo que utiliza do extrator HOG, LBP é a outra opção, para a classificação de espectrogramas.
 O modelo treinado será salvo no diretório `src/models/` com o nome `HOG_my_model.keras`.
@@ -28,6 +28,6 @@ O modelo treinado será salvo no diretório `src/models/` com o nome `HOG_my_mod
 # Testando um modelo treinado
 Para testar um modelo treinado, você pode utilizar o script `test.py`, por exemplo:
 ```console
-$ python test.py test models/HOG_my_model.keras
+$ python main.py test models/HOG_my_model.keras
 ```
 Desta forma você irá testar o modelo `HOG_my_model.keras` com o conjunto de testes.
