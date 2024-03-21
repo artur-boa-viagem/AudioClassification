@@ -12,6 +12,7 @@ Depois disso você deve instalar alguns pacotes de python que são utilizados ne
 $ cd AudioClassification/
 $ pip install -r requirements.txt
 ```
+(Atenção! Os pacotes acima possuem a versão mais atual para um arch Linux x86-64 em 20/03/2024, caso a instalação de algum pacote falhe, procure a versão correta para o pacote no seu sistema)
 
 # Organização do Projeto
 O projeto possui o diretório 'src/' que contém os códigos fontes do projeto, e os diretórios 'Animal-Sound-Dataset/' e 'Spectrogram-DB/' que contém os datasets utilizados no projeto, no primeiro estão os arquivos de áudio e no segundo estão os espectrogramas gerados a partir dos arquivos de áudio, estes que por sua vez alimentam os modelos utilizados no projeto.
